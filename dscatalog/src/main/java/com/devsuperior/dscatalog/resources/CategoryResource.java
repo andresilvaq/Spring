@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devsuperior.dscatalog.entities.Category;
 
 @RestController
-@RequestMapping (value = "/categories")
+@RequestMapping (value = "/categories") 
 public class CategoryResource {
 	 
 	@GetMapping
