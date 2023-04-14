@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,6 +85,15 @@ public class CategoryService {
 			throw new DataBaseException("Violação da Integridade ao excluir a categoria. " + id);
 		}
 
+	}
+
+	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
+		Page<Category> list = repository.findAll(pageRequest);
+
+		// Para cada X no Map add na lista instanciando nova CategoryDTO
+		Page<CategoryDTO> listDTO = list.map(x -> new CategoryDTO(x));
+
+		return listDTO;
 	}
 
 }
