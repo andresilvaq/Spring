@@ -31,7 +31,6 @@ public class Category implements Serializable {
     private Date createdAt;
 
 	public Category() {
-
 	}
 
 	public Category(Long id, String name) {
