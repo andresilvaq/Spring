@@ -56,9 +56,9 @@ public class ProductResource {
 				Direction.valueOf(direction), orderBy);
 		
 		
-		Page<ProductDTO> lista = service.findAllPaged(pageRequest);
+		Page<ProductDTO> list = service.findAllPaged(pageRequest);
 
-		return ResponseEntity.ok().body(lista);
+		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
