@@ -14,6 +14,8 @@ import com.andresilvaq.restcrudclient.entities.Client;
 import com.andresilvaq.restcrudclient.repositories.ClientRepository;
 import com.andresilvaq.restcrudclient.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ClientService {
 	
@@ -46,6 +48,19 @@ public class ClientService {
 		return new ClientDTO(entity);
 	}
 
+	@Transactional
+	public ClientDTO update(Long id, ClientDTO dto) {
+		try {
+			Client entity = repository.getReferenceById(id);
+			copyDtoToEntity(dto, entity);
+			entity = repository.save(entity);
+			return new ClientDTO(entity);
+		} catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id não localizado: "+ id);
+		}
+	}
+
+	
 	private void copyDtoToEntity(ClientDTO dto, Client entity) {
 		entity.setName(dto.getName());
 		entity.setCpf(dto.getCpf());
@@ -53,5 +68,4 @@ public class ClientService {
 		entity.setBirthDate(dto.getBirthDate());
 		entity.setChildren(dto.getChildren());
 	}
-
 }
