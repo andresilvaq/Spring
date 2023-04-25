@@ -26,5 +26,7 @@ public class ClientService {
 		
 		return listDTO;
 	}
+	
+	
 
 }

@@ -1,20 +1,11 @@
 package com.andresilvaq.restcrudclient.dto;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.Instant;
 import java.util.Objects;
 
 import com.andresilvaq.restcrudclient.entities.Client;
-
-import jakarta.annotation.Generated;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 public class ClientDTO implements Serializable {
 
@@ -27,14 +18,14 @@ public class ClientDTO implements Serializable {
 	private String name;
 	private String cpf;
 	private Double income; 
-	private Instant birthDate;
+	private Date birthDate;
 	private Integer children;
 	
 	public ClientDTO() {
 		
 	}
 	
-	public ClientDTO(Long id, String name, String cpf, Double income, Instant birthDate, Integer children) {
+	public ClientDTO(Long id, String name, String cpf, Double income, Date birthDate, Integer children) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -86,11 +77,11 @@ public class ClientDTO implements Serializable {
 		this.income = income;
 	}
 
-	public Instant getBirthDate() {
+	public Date getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Instant birthDate) {
+	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
 
