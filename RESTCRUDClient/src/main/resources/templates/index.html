@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+ 
+<title>Lista de Clientes</title>
+  
+  
+
+ 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</head>
+<body>
+  
+ 
+<h1>Lista de Clientes</h1>
+  
+ 
+<table id="clients-table">
+    
+   
+<thead>
+      
+     
+<tr>
+        
+       
+<th>ID</th>
+        
+       
+<th>Nome</th>
+        
+       
+<th>CPF</th>
+      
+      </tr
+
+     
+</tr>
+    
+   
+</thead>
+    
+   
+<tbody></tbody>
+  
+
+
+ 
+</table>
+  
+ 
+<div id="error-message"></div>
+
+  
+
+ 
+
+
+<script>
+   
+    // Faz a requisição GET para o serviço REST
+    $.ajax({
+      url: 'http://localhost:8080/clients',
+      method: 'GET',
+      dataType: 'json',
+      success: function(clients) {
+        console.log(clients);
+        // Se obteve sucesso, preenche a tabela com os clientes
+       // const tbody = $('#clients-table tbody');
+       // clients.forEach(function(client) {
+       //   const row = $('<tr>').appendTo(tbody);
+       //   $('<td>').text(client.id).appendTo(row);
+        //  $('<td>').text(client.name).appendTo(row);
+       //   $('<td>').text(client.cpf).appendTo(row);
+       // }
+       // );
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        // Se ocorreu um erro, exibe uma mensagem de erro
+        $('#error-message').text('Não foi possível obter a lista de clientes. Erro: ' + textStatus);
+      }
+    });
+  </script>
+
+
+</body>
+
+
+</html>
