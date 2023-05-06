@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,33 +22,33 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ClientService {
-	
+
 	@Autowired
 	private ClientRepository repository;
-	
+
 	@Transactional(readOnly = true)
-	public List<ClientDTO> findAll () {
+	public List<ClientDTO> findAll() {
 		List<Client> list = repository.findAll();
-		
+
 		List<ClientDTO> listDTO = list.stream().map(x -> new ClientDTO(x)).collect(Collectors.toList());
-		
+
 		return listDTO;
 	}
-	
+
 	@Transactional
 	public ClientDTO findById(Long id) {
 		Optional<Client> obj = repository.findById(id);
 		Client entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entidade não encontrada"));
-		
+
 		return new ClientDTO(entity);
 	}
-	
+
 	@Transactional
 	public ClientDTO insert(ClientDTO dto) {
 		Client entity = new Client();
 		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity);
-		
+
 		return new ClientDTO(entity);
 	}
 
@@ -57,11 +59,11 @@ public class ClientService {
 			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
 			return new ClientDTO(entity);
-		} catch(EntityNotFoundException e) {
-			throw new ResourceNotFoundException("Id não localizado: "+ id);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id não localizado: " + id);
 		}
 	}
-	
+
 	public void delete(Long id) {
 		try {
 			if (repository.existsById(id)) {
@@ -75,6 +77,16 @@ public class ClientService {
 			throw new DataBaseException("Violação da Integridade ao excluir a categoria. " + id);
 		}
 	}
+
+	public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
+		Page<Client> list = repository.findAll(pageRequest);
+
+		// Para cada X no Map add na lista instanciando nova ProductDTO
+		Page<ClientDTO> listDTO = list.map(x -> new ClientDTO(x));
+
+		return listDTO;
+	}
+
 	private void copyDtoToEntity(ClientDTO dto, Client entity) {
 		entity.setName(dto.getName());
 		entity.setCpf(dto.getCpf());
