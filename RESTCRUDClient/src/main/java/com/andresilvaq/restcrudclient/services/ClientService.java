@@ -2,16 +2,18 @@ package com.andresilvaq.restcrudclient.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.andresilvaq.restcrudclient.dto.ClientDTO;
 import com.andresilvaq.restcrudclient.entities.Client;
 import com.andresilvaq.restcrudclient.repositories.ClientRepository;
+import com.andresilvaq.restcrudclient.services.exceptions.DataBaseException;
 import com.andresilvaq.restcrudclient.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -59,8 +61,20 @@ public class ClientService {
 			throw new ResourceNotFoundException("Id não localizado: "+ id);
 		}
 	}
-
 	
+	public void delete(Long id) {
+		try {
+			if (repository.existsById(id)) {
+				repository.deleteById(id);
+			} else {
+				throw new ResourceNotFoundException("Id não localizado: " + id);
+			}
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Id não localizado: " + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataBaseException("Violação da Integridade ao excluir a categoria. " + id);
+		}
+	}
 	private void copyDtoToEntity(ClientDTO dto, Client entity) {
 		entity.setName(dto.getName());
 		entity.setCpf(dto.getCpf());
@@ -68,4 +82,5 @@ public class ClientService {
 		entity.setBirthDate(dto.getBirthDate());
 		entity.setChildren(dto.getChildren());
 	}
+
 }
