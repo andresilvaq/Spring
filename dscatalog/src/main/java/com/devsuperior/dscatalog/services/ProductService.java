@@ -23,15 +23,12 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
-/* Componente que participa da Injeção de Dependência */
 @Service
 public class ProductService {
 
-	/* Informa que objeto será gerenciado pelo Spring */
 	@Autowired
 	private ProductRepository repository;
 	
-	/* Informa que objeto será gerenciado pelo Spring */
 	@Autowired
 	private CategoryRepository categoryRepository;
 	

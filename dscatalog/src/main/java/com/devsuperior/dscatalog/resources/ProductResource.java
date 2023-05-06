@@ -29,9 +29,9 @@ public class ProductResource {
 	private ProductService service;
 
 	/* Método sem paginação */
-	//	@GetMapping
-	//	public ResponseEntity<List<ProductDTO>> findAll() {
-	//		List<ProductDTO> lista = new ArrayList<>();
+	// @GetMapping
+	// public ResponseEntity<List<ProductDTO>> findAll() {
+	// List<ProductDTO> lista = new ArrayList<>();
 
 ////		lista.add(new Product(1L, "Books"));
 ////		lista.add(new Product(2L, "Electronics"));
@@ -39,23 +39,17 @@ public class ProductResource {
 
 //		return ResponseEntity.ok().body(lista);
 //	}
-	
+
 	/* Método COM paginação */
-	
+
 	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAllPaged(
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<ProductDTO>> findAllPaged(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
-			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy
-	) {
-		
-		
-		PageRequest pageRequest = PageRequest.of(
-				page, linesPerPage, 
-				Direction.valueOf(direction), orderBy);
-		
-		
+			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
+
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+
 		Page<ProductDTO> list = service.findAllPaged(pageRequest);
 
 		return ResponseEntity.ok().body(list);
@@ -71,7 +65,9 @@ public class ProductResource {
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
 		dto = service.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(dto.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}")
+				.buildAndExpand(dto.getId())
+				.toUri();
 
 		return ResponseEntity.created(uri).body(dto);
 	}
@@ -82,7 +78,6 @@ public class ProductResource {
 
 		return ResponseEntity.ok().body(dto);
 	}
-	
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@PathVariable Long id) {
